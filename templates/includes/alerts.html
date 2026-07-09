@@ -1,0 +1,44 @@
+{% if messages %}
+    <div id="messages-container" class="max-w-7xl mx-auto px-4 mt-4 space-y-3">
+        {% for message in messages %}
+        <div class="flex items-center justify-between p-4 rounded-xl border shadow-sm transition-all duration-300
+            {% if message.tags == 'success' %}
+                bg-green-50 border-green-200 text-green-800
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                bg-red-50 border-red-200 text-red-800
+            {% elif message.tags == 'warning' %}
+                bg-amber-50 border-amber-200 text-amber-800
+            {% else %}
+                bg-blue-50 border-blue-200 text-blue-800
+            {% endif %}" 
+            role="alert">
+            
+            <div class="flex items-center gap-3">
+                {% if message.tags == 'success' %}
+                    <i class="fa fa-check-circle text-lg text-green-500"></i>
+                {% elif message.tags == 'error' or message.tags == 'danger' %}
+                    <i class="fa fa-exclamation-circle text-lg text-red-500"></i>
+                {% elif message.tags == 'warning' %}
+                    <i class="fa fa-exclamation-triangle text-lg text-amber-500"></i>
+                {% else %}
+                    <i class="fa fa-info-circle text-lg text-blue-500"></i>
+                {% endif %}
+
+                <span class="text-sm font-medium">
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <strong class="font-bold">Erro:</strong> 
+                    {% endif %}
+                    {{ message }}
+                </span>
+            </div>
+
+            <button type="button" 
+                    onclick="this.parentElement.remove()" 
+                    class="p-1 rounded-lg hover:bg-black/5 text-current opacity-60 hover:opacity-100 transition-all focus:outline-none" 
+                    aria-label="Fechar">
+                <i class="fa fa-times text-base"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}

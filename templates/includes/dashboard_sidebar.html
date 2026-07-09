@@ -1,0 +1,57 @@
+<aside class="w-full md:w-64 flex-shrink-0">
+    <nav class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm p-2 space-y-1">
+        
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 
+            {% if '/accounts/' == request.path %}
+                bg-primary-50 text-primary-600
+            {% else %}
+                text-gray-700 hover:bg-gray-50 hover:text-gray-900
+            {% endif %}" 
+           href="{% url 'dashboard' %}">
+            <i class="fa fa-th-large w-5 {% if '/accounts/' == request.path %}text-primary-500{% else %}text-gray-400{% endif %}"></i>
+            Painel de Controle
+        </a>
+        
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 
+            {% if '/my_orders/' in request.path %}
+                bg-primary-50 text-primary-600
+            {% else %}
+                text-gray-700 hover:bg-gray-50 hover:text-gray-900
+            {% endif %}" 
+           href="{% url 'my_orders' %}">
+            <i class="fa fa-shopping-bag w-5 {% if '/my_orders/' in request.path %}text-primary-500{% else %}text-gray-400{% endif %}"></i>
+            Meus Pedidos
+        </a>
+        
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 
+            {% if '/edit_profile/' in request.path %}
+                bg-primary-50 text-primary-600
+            {% else %}
+                text-gray-700 hover:bg-gray-50 hover:text-gray-900
+            {% endif %}" 
+           href="{% url 'edit_profile' %}">
+            <i class="fa fa-user w-5 {% if '/edit_profile/' in request.path %}text-primary-500{% else %}text-gray-400{% endif %}"></i>
+            Editar Perfil
+        </a>
+        
+        <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 
+            {% if '/change_password/' in request.path %}
+                bg-primary-50 text-primary-600
+            {% else %}
+                text-gray-700 hover:bg-gray-50 hover:text-gray-900
+            {% endif %}" 
+           href="{% url 'change_password' %}">
+            <i class="fa fa-lock w-5 {% if '/change_password/' in request.path %}text-primary-500{% else %}text-gray-400{% endif %}"></i>
+            Alterar Senha
+        </a>
+        
+    </nav>
+
+    <div class="mt-4">
+        <a class="flex items-center justify-center gap-2 w-full px-4 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-200" 
+           href="{% url 'logout' %}"> 
+            <i class="fa fa-power-off"></i> 
+            <span>Sair</span> 
+        </a> 
+    </div>
+    </aside>

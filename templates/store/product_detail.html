@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                
+                <aside class="p-6 sm:p-8 bg-white flex flex-col justify-between border-b md:border-b-0 md:border-r border-gray-100">
+                    <div class="aspect-square w-full bg-gray-50/50 rounded-xl border border-gray-100 p-4 flex items-center justify-center overflow-hidden">
+                        <img id="mainImage" src="{{ single_product.images.url }}" class="max-h-full max-w-full object-contain transform hover:scale-105 transition-transform duration-300" alt="{{ single_product.product_name }}">
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" onclick="changeImage('{{ single_product.images.url }}'); return false;" 
+                            class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                <img src="{{ single_product.images.url }}" class="max-h-full object-contain" alt="Imagem do Produto">
+                            </a>
+                            {% for i in product_gallery %}
+                                <a href="#" onclick="changeImage('{{ i.image.url }}'); return false;" 
+                                class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                    <img src="{{ i.image.url }}" class="max-h-full object-contain" alt="Galeria do Produto">
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </aside>
+
+                <main class="p-6 sm:p-8 flex flex-col justify-between">
+                    <form action="{% url 'add_cart' single_product.id %}" method="POST" class="h-full flex flex-col justify-between space-y-6">
+                        {% csrf_token %}
+                        
+                        <div class="space-y-4">
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">{{ single_product.product_name }}</h2>
+                            
+                            <div class="flex items-center gap-2 text-sm">
+                                <div class="flex items-center text-amber-400 gap-0.5">
+                                    <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                </div>
+                                <span class="text-gray-500 font-medium">({{ single_product.countReview }} avaliações)</span>
+                            </div>
+                            
+                            <div class="inline-block">
+                                <span class="text-3xl font-black text-gray-900">R$ {{ single_product.price }}</span>
+                            </div>
+
+                            <p class="text-gray-600 text-sm leading-relaxed">{{ single_product.description }}</p>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div class="space-y-4">
+                            <div class="flex flex-col gap-1.5 max-w-xs">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Escolha a Cor</label>
+                                <select name="color" required class="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white cursor-pointer">
+                                    <option value="" disabled selected>Selecione</option>
+                                    {% for i in single_product.variation_set.colors %}
+                                        <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5 max-w-xs">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Selecione o Tamanho</label>
+                                <select name="size" class="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white cursor-pointer">
+                                    <option value="" disabled selected>Selecione</option>
+                                    {% for i in single_product.variation_set.sizes %}
+                                        <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div>
+                            {% if single_product.stock <= 0 %}
+                                <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 font-bold rounded-lg border border-red-100 text-sm">
+                                    <i class="fas fa-exclamation-circle"></i> Produto Esgotado
+                                </div>
+                            {% else %}
+                                <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold text-base rounded-xl shadow-sm hover:shadow transition-all cursor-pointer w-full sm:w-auto">
+                                    <span>Adicionar ao Carrinho</span>
+                                    <i class="fas fa-shopping-cart text-sm"></i>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </main>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-9 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+                
+                <form action="{% url 'submit_review' single_product.id %}" method="POST" class="space-y-5">
+                    {% csrf_token %}
+                    <h5 class="text-lg font-bold text-gray-900 tracking-tight">Deixe sua Avaliação</h5>
+                    
+                    <div class="space-y-1">
+                        <label class="text-sm font-medium text-gray-600">Como você avalia este produto?</label>
+                        <div class="flex">
+                            <div class="rate flex flex-row-reverse justify-end">
+                                <input type="radio" name="rating" id="rating10" value="5" required class="hidden"><label for="rating10" title="5 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star"></label>
+                                <input type="radio" name="rating" id="rating9" value="4.5" required class="hidden"><label for="rating9" title="4.5 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star-half-alt -ml-[1em] relative z-10 half"></label>
+                                <input type="radio" name="rating" id="rating8" value="4" required class="hidden"><label for="rating8" title="4 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star"></label>
+                                <input type="radio" name="rating" id="rating7" value="3.5" required class="hidden"><label for="rating7" title="3.5 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star-half-alt -ml-[1em] relative z-10 half"></label>
+                                <input type="radio" name="rating" id="rating6" value="3" required class="hidden"><label for="rating6" title="3 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star"></label>
+                                <input type="radio" name="rating" id="rating5" value="2.5" required class="hidden"><label for="rating5" title="2.5 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star-half-alt -ml-[1em] relative z-10 half"></label>
+                                <input type="radio" name="rating" id="rating4" value="2" required class="hidden"><label for="rating4" title="2 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star"></label>
+                                <input type="radio" name="rating" id="rating3" value="1.5" required class="hidden"><label for="rating3" title="1.5 estrelas" class="cursor-pointer text-2xl text-gray-300 fas fa-star-half-alt -ml-[1em] relative z-10 half"></label>
+                                <input type="radio" name="rating" id="rating2" value="1" required class="hidden"><label for="rating2" title="1 estrela" class="cursor-pointer text-2xl text-gray-300 fas fa-star"></label>
+                                <input type="radio" name="rating" id="rating1" value="0.5" required class="hidden"><label for="rating1" title="0.5 estrela" class="cursor-pointer text-2xl text-gray-300 fas fa-star-half-alt -ml-[1em] relative z-10 half"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Título da Avaliação</label>
+                        <input type="text" name="subject" class="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white placeholder-gray-400">
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Comentário</label>
+                        <textarea name="review" rows="4" class="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white placeholder-gray-400 resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        {% if user.is_authenticated %}
+                            {% if orderproduct %}
+                                <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all cursor-pointer">
+                                    Enviar Avaliação
+                                </button>
+                            {% else %}
+                                <p class="text-sm font-medium text-amber-600 bg-amber-50 border border-amber-100 rounded-lg px-4 py-3 inline-flex items-center gap-2">
+                                    <i class="fas fa-info-circle"></i> Você precisa ter comprado este produto para enviar uma avaliação.
+                                </p> 
+                            {% endif %}
+                        {% else %}
+                            <p class="text-sm text-gray-500">
+                                Você precisa estar logado para publicar uma avaliação. 
+                                <a href="{% url 'login' %}" class="text-primary-600 font-semibold hover:underline ml-1">Fazer Login agora</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                    
+                    {% include 'includes/alerts.html' %}
+                </form>
+
+                <div class="pt-6 border-t border-gray-100">
+                    <header class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 class="text-lg font-bold text-gray-900 tracking-tight">Avaliações dos Clientes</h3>
+                        <div class="flex items-center gap-2 text-xs font-medium">
+                            <div class="flex items-center text-amber-400 gap-0.5">
+                                <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
+                            </div>
+                            <span class="text-gray-500">Média de {{ single_product.countReview }} opiniões</span>
+                        </div>
+                    </header>
+
+                    <div class="space-y-4">
+                        {% for review in reviews %}
+                            <article class="p-5 bg-gray-50/50 rounded-xl border border-gray-200/60 shadow-sm space-y-3">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <h6 class="font-bold text-gray-900 text-sm mb-1">{{ review.user.full_name }}</h6>
+                                        <div class="flex items-center text-xs text-amber-400 gap-0.5">
+                                            <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o{% endif %}" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-400 whitespace-nowrap">{{ review.updated_at }}</span>
+                                </div>
+                                <div class="text-sm leading-relaxed text-gray-600">
+                                    <h7 class="font-bold text-gray-800 block text-sm mb-1">{{ review.subject }}</h7>
+                                    <p>{{ review.review }}</p>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div> </div> </section>
+
+<style>
+    /* Esconde o rádio padrão */
+    .rate > input {
+        display: none;
+    }
+
+    .rate {
+        display: inline-block;
+        border: 0;
+    }
+
+    /* O float: right é fundamental aqui para o seletor CSS (~) funcionar de trás para frente */
+    .rate > label {
+        float: right;
+        color: #d1d5db; /* Cor cinza padrão do Tailwind (gray-300) para estrelas vazias */
+        transition: color 0.15s ease-in-out;
+    }
+
+    /* Renderização das Estrelas (Font Awesome) */
+    .rate > label:before {
+        display: inline-block;
+        font-size: 1.5rem; /* Tamanho ligeiramente maior para melhor clique no mobile */
+        font-family: "FontAwesome", "Font Awesome 5 Free", sans-serif;
+        font-weight: 900;
+        content: "\f005";
+        margin: 0;
+        padding: 0.1rem .2rem;
+        cursor: pointer;
+    }
+
+    /* Comportamento da Meia Estrela Original */
+    .rate .half:before {
+        content: "\f089";
+        position: absolute;
+        padding-right: 0;
+    }
+
+    /* Cores Originais: Clique e Hover (Seleção vinda da esquerda) */
+    .rate > input:checked ~ label, 
+    .rate > label:hover ~ label,
+    .rate > label:hover {
+        color: #ffb503;
+    }
+
+    /* Cores Originais: Destaque ao passar o mouse por cima de um valor já checado */
+    .rate > input:checked + label:hover, 
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #cc9000;
+    }
+
+    /* Força a cor amarela nas estrelas de exibição estática das avaliações antigas */
+    .rating-star i {
+        color: #ffb503 !important;
+    }
+
+    /* Estilização da Galeria de Miniaturas (Mantendo o alinhamento correto abaixo da foto) */
+    ul.thumb {
+        margin: 0 auto;
+        padding: 0;
+        float: left;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    ul.thumb li {
+        list-style: none;
+    }
+</style>
+
+<script>
+    function changeImage(url) {
+        document.getElementById('mainImage').src = url;
+    }
+</script>
+{% endblock %}

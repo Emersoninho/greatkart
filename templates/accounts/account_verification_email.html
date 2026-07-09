@@ -1,0 +1,8 @@
+{% autoescape off %}
+Olá, {{ user.first_name }},
+
+Por favor, clique no link abaixo para confirmar o seu cadastro:
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+Se você não realizou esta solicitação, por favor, desconsidere este e-mail.
+{% endautoescape %}

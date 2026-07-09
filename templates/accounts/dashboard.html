@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-10 bg-gray-50 min-h-screen">
+    
+    {% include 'includes/alerts.html' %}
+    
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+            
+            {% include 'includes/dashboard_sidebar.html' %}
+            
+            <main class="flex-1 w-full">
+                <article class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    
+                    <header class="border-b border-gray-200 bg-gray-50/50 px-6 py-4 flex flex-wrap items-center gap-2">
+                        <strong class="text-gray-500 font-medium text-sm sm:text-base">Conectado como:</strong>
+                        <span class="text-gray-900 font-semibold text-sm sm:text-base">{{ user.full_name }}</span>
+                    </header>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6"> 
+
+                            <div class="bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow transition-shadow">
+                                <div class="h-12 w-12 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center mb-3">
+                                    <i class="fa fa-shopping-bag text-xl"></i>
+                                </div>
+                                <h5 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total de Pedidos</h5>
+                                <h4 class="text-3xl font-extrabold text-gray-900 mt-2 mb-3">{{ orders_count }}</h4>
+                                <a href="{% url 'my_orders' %}" class="text-sm font-semibold text-primary-600 hover:text-primary-700 hover:underline transition-colors flex items-center gap-1">
+                                    Visualizar Pedidos <i class="fa fa-arrow-right text-xs"></i>
+                                </a>
+                            </div>
+
+                            <div class="bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow transition-shadow">
+                                <div class="relative mb-3">
+                                    {% if userprofile.profile_picture %}
+                                        <img src="{{ userprofile.profile_picture.url }}" alt="Foto de Perfil" class="w-16 h-16 rounded-full object-cover ring-4 ring-gray-100 shadow-inner">
+                                    {% else %}
+                                        <div class="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center text-2xl border border-gray-200">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="space-y-1">
+                                    <p class="text-sm font-medium text-gray-800 flex items-center justify-center gap-1.5">
+                                        <i class="fa fa-envelope text-gray-400 text-xs"></i> {{ user.email }}
+                                    </p>
+                                    {% if user.phone_number %}
+                                        <p class="text-sm text-gray-500 flex items-center justify-center gap-1.5">
+                                            <i class="fa fa-phone text-gray-400 text-xs"></i> {{ user.phone_number }}
+                                        </p>
+                                    {% else %}
+                                        <p class="text-xs italic text-gray-400">Telefone não cadastrado</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div> </div> </article> </main>
+            
+        </div> </div>
+
+</section>
+{% endblock %}

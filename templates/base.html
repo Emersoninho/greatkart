@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=604800" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>GreatKart | Uma das Maiores Plataformas de Compras Online</title>
+
+<link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+
+<!-- jQuery (Mantido para compatibilidade com seus scripts antigos) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Tailwind CSS CDN (Para desenvolvimento rápido) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Configuração de Cores do Tailwind (Opcional, para deixar com cara de e-commerce moderno) -->
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: {
+            50: '#f5f7ff',
+            100: '#ebf0ff',
+            500: '#3b82f6', // Azul moderno (substitui o primário do bootstrap)
+            600: '#2563eb',
+            700: '#1d4ed8',
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Font Awesome 5 & 4 (Mantidos para os ícones funcionarem) -->
+<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Seus estilos customizados (Mantenha se tiver regras específicas de banco de dados ou lógicas suas) -->
+<link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- PWA -->
+<link rel="manifest" href="{% static 'js/manifest.json' %}">
+<meta name="theme-color" content="#3b82f6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GreatKart">
+<link rel="apple-touch-icon" href="{% static 'images/icons/icon-192x192.png' %}">
+
+<!-- Seus scripts JavaScript -->
+<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    // Seu código jQuery existente aqui
+});
+</script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FPR17EG0DP');
+</script>
+
+<!-- Meta Pixel -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '176795390927633');
+    fbq('track', 'PageView');
+</script>
+
+<noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id=SEU_PIXEL_ID&ev=PageView&noscript=1"/>
+</noscript>
+
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased font-sans">
+
+    <!-- navbar -->
+    {% include 'includes/navbar.html' %}
+
+    <!-- content -->
+    <main class="min-h-screen">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- footer -->
+    {% include 'includes/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Service Worker -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("{% static 'js/serviceworker.js' %}")
+                .then(registration => {
+                    console.log('SW registrado:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('SW falhou:', error);
+                });
+        });
+    }
+</script>
+
+<!-- Chat WhatsApp Flutuante -->
+<style>
+    .whatsapp-float {
+        position: fixed;
+        width: 60px;
+        height: 60px;
+        bottom: 30px;
+        right: 30px;
+        background-color: #25d366;
+        color: #fff;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        animation: pulse 2s infinite;
+    }
+    
+    .whatsapp-float:hover {
+        background-color: #20ba5a;
+        transform: scale(1.1);
+        box-shadow: 2px 2px 20px rgba(37, 211, 102, 0.5);
+    }
+    
+    .whatsapp-tooltip {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        background: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 14px;
+        color: #333;
+        z-index: 999;
+        display: none;
+        white-space: nowrap;
+    }
+    
+    .whatsapp-float:hover + .whatsapp-tooltip {
+        display: block;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+        70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+</style>
+
+<a href="https://wa.me/5581996791890?text=Olá! Gostaria de ajuda." target="_blank" class="whatsapp-float" title="Fale conosco no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+<div class="whatsapp-tooltip">Precisa de ajuda? 💬</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<footer class="bg-white border-t border-gray-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+            
+            <div class="w-full md:w-auto text-center md:text-left order-3 md:order-1">
+                <p>&copy; 2026 GreatKart. Todos os direitos reservados.</p>
+            </div>
+            
+            <div class="w-full md:flex-1 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center order-1 md:order-2">
+                <span class="flex items-center gap-1.5 hover:text-primary-600 transition-colors">
+                    <i class="fa fa-envelope text-gray-400"></i> emersoneletrotecnico2016@gmail.com
+                </span>
+                <span class="flex items-center gap-1.5 hover:text-primary-600 transition-colors">
+                    <i class="fa fa-phone text-gray-400"></i> (81) 99679-1890
+                </span>
+                <span class="flex items-center gap-1.5 text-gray-400">
+                    <i class="fa fa-map-marker text-gray-400"></i> Paudalho, PE - Brasil
+                </span>
+            </div>
+            
+            <div class="w-full md:w-auto flex items-center justify-center gap-3 text-2xl text-gray-400 order-2 md:order-3">
+                <i class="fab fa-cc-visa hover:text-blue-600 transition-colors" title="Visa"></i>
+                <i class="fab fa-cc-mastercard hover:text-red-500 transition-colors" title="Mastercard"></i>
+                <i class="fab fa-cc-paypal hover:text-blue-800 transition-colors" title="PayPal"></i>
+            </div>
+            
+        </div>
+
+             <!-- 🆕 LINKS DAS POLÍTICAS -->
+        <div class="flex justify-center gap-6 mt-4 text-xs text-gray-400">
+            <a href="{% url 'termos' %}" class="hover:text-primary-600 transition-colors">Termos de Uso</a>
+            <a href="{% url 'privacidade' %}" class="hover:text-primary-600 transition-colors">Política de Privacidade</a>
+            <a href="{% url 'trocas' %}" class="hover:text-primary-600 transition-colors">Trocas e Devoluções</a>
+        </div>
+
+    </div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Lógica para alternar a imagem principal ao clicar nas miniaturas (página de detalhes do produto)
+        $('.thumb a').click(function(e){
+            e.preventDefault();
+            $('.mainImage img').attr('src', $(this).attr("href"));
+        });
+    });
+</script>

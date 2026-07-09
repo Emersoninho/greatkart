@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-12 bg-gray-100 min-h-screen flex flex-col items-center justify-start px-4">
+
+    <!-- CARD DE STATUS DO TOPO (DINÂMICO PARA ASSÍNCRONO / WEBHOOK) -->
+    <div class="text-center my-6 max-w-md w-full bg-white p-6 rounded-2xl border border-gray-200 shadow-sm animate-fade-in">
+        {% if payment.status == 'Completed' or payment.status == 'Approved' or payment.status == 'Pago' %}
+            <!-- Caso o pagamento já tenha sido aprovado na hora -->
+            <div class="inline-flex items-center justify-center h-16 w-16 bg-green-100 text-green-600 rounded-full mb-4">
+                <i class="fas fa-check-circle text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Pedido Confirmado!</h2>
+            <p class="text-sm text-gray-500 mt-2 mb-4">Seu pagamento foi aprovado com sucesso. Já estamos preparando seu envio!</p>
+        {% else %}
+            <!-- Caso o pagamento esteja aguardando webhook (Pix gerado, boleto ou análise) -->
+            <div class="inline-flex items-center justify-center h-16 w-16 bg-amber-100 text-amber-600 rounded-full mb-4">
+                <i class="fas fa-clock text-4xl animate-pulse"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Pedido Recebido!</h2>
+            <p class="text-sm text-gray-500 mt-2 mb-4">Estamos aguardando a confirmação do pagamento. Assim que for aprovado, seu pedido será atualizado.</p>
+        {% endif %}
+        <div>
+            <a href="{% url 'store' %}" class="inline-flex items-center justify-center px-6 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow transition-all cursor-pointer">
+                Continuar Comprando
+            </a>
+        </div>
+    </div>
+
+    <!-- NOTA FISCAL / COMPROVANTE DETALHADO -->
+    <div class="w-full max-w-3xl bg-white rounded-2xl border border-gray-200 shadow-md p-6 sm:p-10 mb-8">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-6 border-b border-gray-200 pb-8">
+            <div class="flex-shrink-0">
+                <img src="{% static '/images/logo.png' %}" alt="Logo Invoice" class="h-10 w-auto object-contain">
+            </div>
+            
+            <div class="text-left sm:text-right text-sm">
+                <h5 class="font-bold text-gray-900 uppercase tracking-wider text-xs mb-2">Faturado Para:</h5>
+                <ul class="space-y-1 text-gray-600 font-medium">
+                    <li class="text-gray-900 font-bold text-base">{{ order.full_name }}</li>
+                    <li>{{ order.full_address }}</li>
+                    <li>{{ order.city }}, {{ order.state }}</li>
+                    <li class="uppercase text-xs text-gray-400 font-bold tracking-wider">{{ order.country }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- METADADOS DO PEDIDO -->
+        <div class="my-8 bg-gray-50 border border-gray-200 rounded-xl p-5 sm:p-6">
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                <li class="text-gray-600 font-medium">
+                    <strong class="text-gray-900 font-bold">Pedido:</strong> #{{ order_number }}
+                </li>
+                <li class="text-gray-600 font-medium sm:text-right">
+                    <strong class="text-gray-900 font-bold">Data do Pedido:</strong> {{ order.created_at }}
+                </li>
+                <li class="text-gray-600 font-medium break-all">
+                    <strong class="text-gray-900 font-bold">ID da Transação:</strong> <span class="font-mono text-xs bg-gray-200/60 px-1.5 py-0.5 rounded text-gray-800">{{ transID }}</span>
+                </li>
+                <li class="text-gray-600 font-medium sm:text-right flex items-center sm:justify-end gap-1.5">
+                    <strong class="text-gray-900 font-bold">Status:</strong> 
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide
+                        {% if payment.status == 'Completed' or payment.status == 'Approved' or payment.status == 'Pago' %}
+                            bg-green-100 text-green-800
+                        {% elif payment.status == 'Pending' or payment.status == 'Aguardando' %}
+                            bg-amber-100 text-amber-800
+                        {% else %}
+                            bg-red-100 text-red-800
+                        {% endif %}">
+                        
+                        <!-- Tradução condicional amigável -->
+                        {% if payment.status == 'Completed' or payment.status == 'Approved' or payment.status == 'Pago' %}
+                            Pago
+                        {% elif payment.status == 'Pending' or payment.status == 'Aguardando' %}
+                            Aguardando
+                        {% else %}
+                            {{ payment.status }}
+                        {% endif %}
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- TABELA DE PRODUTOS COMPRADOS -->
+        <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm mb-8">
+            <table class="w-full text-left border-collapse text-sm text-gray-600">
+                <thead class="bg-gray-50 text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 w-7/12">Produtos</th>
+                        <th scope="col" class="px-6 py-4 text-center w-2/12">Qtd</th>
+                        <th scope="col" class="px-6 py-4 text-center w-3/12">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white font-medium">
+                    {% for item in ordered_products %}
+                        <tr class="hover:bg-gray-50/40 transition-colors">
+                            <td class="px-6 py-4 text-gray-900 font-bold">
+                                {{ item.product.product_name }}
+                                <div class="text-xs text-gray-400 font-medium mt-0.5 space-x-1">
+                                    {% if item.variations.all %}
+                                        {% for v in item.variations.all %}
+                                            <span class="bg-gray-100 px-1.5 py-0.5 rounded">{{ v.variation_value }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center text-gray-500">{{ item.quantity }}</td>
+                            <td class="px-6 py-4 text-center text-gray-900 font-semibold">R$ {{ item.product_price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RESUMO FINANCEIRO DOS VALORES -->
+        <div class="flex justify-end text-sm">
+            <div class="w-full sm:w-64 space-y-2 border-t border-gray-100 pt-4">
+                <div class="flex justify-between text-gray-500 font-medium">
+                    <span>Subtotal:</span>
+                    <span class="text-gray-900">R$ {{ order.order_total }}</span>
+                </div>
+                <!-- <div class="flex justify-between text-gray-500 font-medium">
+                    <span>Imposto:</span>
+                    <span class="text-gray-900">R$ {{ order.tax }}</span>
+                </div> -->
+                <div class="flex justify-between text-base font-extrabold border-t border-gray-200 pt-2 text-gray-900">
+                    <span>Total Geral:</span>
+                    <span class="text-green-600">R$ {{ order.order_total }}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- 🆕 Pixel - Compra Realizada -->
+<script>
+    fbq('track', 'Purchase', {
+        value: {{ order.order_total }},
+        currency: 'BRL',
+        order_number: '{{ order.order_number }}'
+    });
+</script>
+
+<!-- 🆕 Google Analytics - Compra -->
+<script>
+    gtag('event', 'purchase', {
+        transaction_id: '{{ order.order_number }}',
+        value: {{ order.order_total }},
+        currency: 'BRL',
+    });
+</script>
+
+{% endblock %}

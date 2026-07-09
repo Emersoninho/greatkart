@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">GreatKart Admin</a>
+    </h1>
+{% endblock %}
+
+{% block nav-global %}
+    <div style="padding: 10px 20px; background: #1e293b;">
+        <a href="{% url 'admin_dashboard' %}" style="color: #fff; font-weight: bold; text-decoration: none;">
+            📊 Dashboard
+        </a>
+    </div>
+{% endblock %}

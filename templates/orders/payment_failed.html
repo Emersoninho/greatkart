@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-times text-red-600 text-2xl"></i>
+        </div>
+        <h2 class="text-xl font-bold text-gray-900 mb-2">Falha na Inicialização do Pagamento</h2>
+        <p class="text-sm text-gray-500 mb-6">Não foi possível conectar com o Mercado Pago para gerar a sua sessão de checkout.</p>
+        
+        <div class="bg-gray-50 rounded-xl p-4 text-left font-mono text-xs text-gray-600 overflow-x-auto mb-6">
+            <strong>Detalhes do Erro:</strong>
+            <pre class="mt-2">{{ error }}</pre>
+        </div>
+
+        <a href="{% url 'store' %}" class="inline-block bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold py-2.5 px-6 rounded-xl transition-colors">
+            Voltar para a Loja
+        </a>
+    </div>
+</section>
+{% endblock %}

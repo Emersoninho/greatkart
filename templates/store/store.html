@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-8 bg-gray-100 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% if 'search' in request.path %}
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Resultados da Pesquisa</h2>
+        {% else %}
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Nossa Loja</h2>
+        {% endif %}
+    </div>
+</section>
+
+<section class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <aside class="lg:col-span-3 space-y-4">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+                    
+                    <article class="p-5">
+                        <header class="mb-3">
+                            <h6 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa fa-chevron-down text-[10px] text-gray-400"></i>
+                                Categorias
+                            </h6>
+                        </header>
+                        <div class="pt-1">
+                            <ul class="space-y-2 text-sm font-medium text-gray-600">
+                                <li>
+                                    <a href="{% url 'store' %}" class="hover:text-primary-600 transition-colors block py-0.5">Todos os Produtos</a>
+                                </li>
+                                {% for category in links %}    
+                                    <li>
+                                        <a href="{{ category.get_url }}" class="hover:text-primary-600 transition-colors block py-0.5">{{ category.category_name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="p-5">
+                        <header class="mb-3">
+                            <h6 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa fa-chevron-down text-[10px] text-gray-400"></i>
+                                Tamanhos
+                            </h6>
+                        </header>
+                        <div class="pt-1 flex flex-wrap gap-2">
+                            <label class="cursor-pointer group">
+                                <input type="checkbox" class="sr-only peer">
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 bg-white block peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 group-hover:border-gray-300 transition-all uppercase">XS</span>
+                            </label>
+                            <label class="cursor-pointer group">
+                                <input type="checkbox" class="sr-only peer">
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 bg-white block peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 group-hover:border-gray-300 transition-all uppercase">SM</span>
+                            </label>
+                            <label class="cursor-pointer group">
+                                <input type="checkbox" class="sr-only peer">
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 bg-white block peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 group-hover:border-gray-300 transition-all uppercase">LG</span>
+                            </label>
+                            <label class="cursor-pointer group">
+                                <input type="checkbox" class="sr-only peer">
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 bg-white block peer-checked:bg-primary-600 peer-checked:text-white peer-checked:border-primary-600 group-hover:border-gray-300 transition-all uppercase">XXL</span>
+                            </label>
+                        </div>
+                    </article>
+                    
+                    <article class="p-5">
+                        <header class="mb-3">
+                            <h6 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa fa-chevron-down text-[10px] text-gray-400"></i>
+                                Faixa de Preço
+                            </h6>
+                        </header>
+                        <div class="pt-1 space-y-4">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Mín</label>
+                                    <select class="w-full px-2 py-1.5 text-xs text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 cursor-pointer font-medium">
+                                        <option value="0">R$ 0</option>
+                                        <option value="50">R$ 50</option>
+                                        <option value="100">R$ 100</option>
+                                        <option value="150">R$ 150</option>
+                                        <option value="200">R$ 200</option>
+                                        <option value="500">R$ 500</option>
+                                        <option value="1000">R$ 1000</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase text-right">Máx</label>
+                                    <select class="w-full px-2 py-1.5 text-xs text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 cursor-pointer font-medium">
+                                        <option value="50">R$ 50</option>
+                                        <option value="100">R$ 100</option>
+                                        <option value="150">R$ 150</option>
+                                        <option value="200">R$ 200</option>
+                                        <option value="500">R$ 500</option>
+                                        <option value="1000">R$ 1000</option>
+                                        <option value="2000">R$ 2000+</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="w-full py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow transition-all cursor-pointer">
+                                Aplicar Filtro
+                            </button>
+                        </div>
+                    </article>
+                    
+                </div>
+            </aside>
+
+            <main class="lg:col-span-9 space-y-6">
+
+                <header class="pb-3 border-b border-gray-200 flex items-center justify-between text-sm text-gray-500">
+                    <div>
+                        <span class="font-medium"><strong class="text-gray-900 font-bold">{{ product_count }}</strong> itens encontrados</span>
+                    </div>
+                </header>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {% if products %}
+                        {% for product in products %}
+                            <div class="group flex flex-col justify-between bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-all duration-200">
+                                <div class="aspect-square bg-gray-50/50 p-4 flex items-center justify-center overflow-hidden relative border-b border-gray-100 flex-shrink-0">
+                                    <a href="{{ product.get_url }}" class="w-full h-full flex items-center justify-center">
+                                        <img src="{{ product.images.url }}" class="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300" alt="{{ product.product_name }}">
+                                    </a>
+                                </div>
+                                
+                                <div class="p-5 flex flex-col justify-between flex-grow space-y-4">
+                                    <div class="space-y-1.5">
+                                        <a href="{{ product.get_url }}" class="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 min-h-[40px] block leading-tight">
+                                            {{ product.product_name }}
+                                        </a>
+                                        <span class="text-base font-extrabold text-gray-900 block">R$ {{ product.price }}</span>
+                                    </div>
+                                    
+                                    <a href="{{ product.get_url }}" class="w-full flex items-center justify-center py-2 px-4 bg-primary-50 group-hover:bg-primary-600 border border-primary-100 group-hover:border-primary-600 text-primary-700 group-hover:text-white text-xs font-bold rounded-lg transition-all shadow-sm">
+                                        Ver Detalhes
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-span-full py-16 px-4 text-center bg-white rounded-2xl border border-gray-200 shadow-sm">
+                            <h2 class="text-xl font-bold text-gray-900 mb-1">Nenhum resultado encontrado.</h2>
+                            <p class="text-sm text-gray-500">Por favor, tente ajustar os termos da pesquisa ou use os filtros laterais.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if products.has_other_pages %}    
+                    <nav class="pt-6 flex justify-center" aria-label="Navegação de páginas">
+                        <ul class="inline-flex items-center -space-x-px text-sm font-medium">
+                            
+                            {% if products.has_previous %}
+                                <li>
+                                    <a href="?page={{ products.previous_page_number }}" class="flex items-center justify-center px-4 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50 hover:text-gray-700 transition-colors">Anterior</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <span class="flex items-center justify-center px-4 py-2 ml-0 leading-tight text-gray-300 bg-gray-50 border border-gray-200 rounded-l-lg cursor-not-allowed">Anterior</span>
+                                </li>
+                            {% endif %}
+                            
+                            {% for i in products.paginator.page_range %}
+                                {% if products.number == i %}
+                                    <li>
+                                        <span class="flex items-center justify-center px-4 py-2 leading-tight text-white bg-primary-600 border border-primary-600 z-10 font-bold shadow-sm">{{ i }}</span>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="?page={{ i }}" class="flex items-center justify-center px-4 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700 transition-colors">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <li>
+                                    <a href="?page={{ products.next_page_number }}" class="flex items-center justify-center px-4 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-50 hover:text-gray-700 transition-colors">Próximo</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <span class="flex items-center justify-center px-4 py-2 leading-tight text-gray-300 bg-gray-50 border border-gray-200 rounded-r-lg cursor-not-allowed">Próximo</span>
+                                </li>
+                            {% endif %}
+                            
+                        </ul>
+                    </nav>
+                {% endif %}
+
+            </main>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

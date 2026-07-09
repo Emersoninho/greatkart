@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-12 bg-gray-100 min-h-screen flex items-center justify-center px-4">
+    
+    <div class="w-full max-w-3xl bg-white rounded-2xl border border-gray-200 shadow-md p-6 sm:p-10 my-4">
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-6 border-b border-gray-200 pb-8">
+            <div class="flex-shrink-0">
+                <img src="{% static '/images/logo.png' %}" alt="Logo GreatKart" class="h-10 w-auto object-contain">
+            </div>
+            
+            <div class="text-left sm:text-right text-sm">
+                <h5 class="font-bold text-gray-900 uppercase tracking-wider text-xs mb-2">Faturado Para:</h5>
+                <ul class="space-y-1 text-gray-600 font-medium">
+                    <li class="text-gray-900 font-bold text-base">{{ order.full_name }}</li>
+                    <li>{{ order.full_address }}</li>
+                    <li>{{ order.city }}, {{ order.state }}</li>
+                    <li class="uppercase text-xs text-gray-400 font-bold tracking-wider">{{ order.country }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="my-8 bg-gray-50 border border-gray-200 rounded-xl p-5 sm:p-6">
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                <li class="text-gray-600 font-medium">
+                    <strong class="text-gray-900 font-bold">Pedido:</strong> #{{ order.order_number }}
+                </li>
+                <li class="text-gray-600 font-medium sm:text-right">
+                    <strong class="text-gray-900 font-bold">Data do Pedido:</strong> {{ order.created_at|date:"d/m/Y" }}
+                </li>
+                <li class="text-gray-600 font-medium break-all">
+                    <strong class="text-gray-900 font-bold">ID da Transação:</strong> <span class="font-mono text-xs bg-gray-200/60 px-1.5 py-0.5 rounded">{{ order.payment.payment_id }}</span>
+                </li>
+                <li class="text-gray-600 font-medium sm:text-right flex items-center sm:justify-end gap-1.5">
+                    <strong class="text-gray-900 font-bold">Status:</strong> 
+                    {% if order.status == 'Pending' %}
+                        <span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-semibold">⏳ Aguardando</span>
+                    {% elif order.status == 'Preparing' %}
+                        <span class="px-2.5 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">📦 Preparando</span>
+                    {% elif order.status == 'Shipped' %}
+                        <span class="px-2.5 py-0.5 bg-purple-100 text-purple-800 rounded-full text-xs font-semibold">🚚 A Caminho</span>
+                    {% elif order.status == 'Delivered' %}
+                        <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-semibold">✅ Entregue</span>
+                    {% elif order.status == 'Cancelled' %}
+                        <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-semibold">❌ Cancelado</span>
+                    {% endif %}
+                </li>
+            </ul>
+            
+            <!-- BARRA DE PROGRESSO -->
+            <div class="mt-6">
+                <div class="flex justify-between text-xs text-gray-500 mb-2 px-1">
+                    <span>Confirmado</span>
+                    <span>Preparando</span>
+                    <span>A Caminho</span>
+                    <span>Entregue</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    {% if order.status == 'Pending' %}
+                        <div class="bg-yellow-400 h-2.5 rounded-full transition-all" style="width: 10%"></div>
+                    {% elif order.status == 'Preparing' %}
+                        <div class="bg-blue-400 h-2.5 rounded-full transition-all" style="width: 35%"></div>
+                    {% elif order.status == 'Shipped' %}
+                        <div class="bg-purple-400 h-2.5 rounded-full transition-all" style="width: 65%"></div>
+                    {% elif order.status == 'Delivered' or order.status == 'Completed' %}
+                        <div class="bg-green-400 h-2.5 rounded-full transition-all" style="width: 100%"></div>
+                    {% elif order.status == 'Cancelled' %}
+                        <div class="bg-red-400 h-2.5 rounded-full transition-all" style="width: 100%"></div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- BOTÃO DE RASTREIO -->
+            {% if order.tracking_code and order.tracking_url %}
+                <div class="mt-5 text-center">
+                    <a href="{{ order.tracking_url }}" target="_blank" 
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all">
+                        🔍 Rastrear Entrega: {{ order.tracking_code }}
+                    </a>
+                    {% if order.shipping_method %}
+                        <p class="text-xs text-gray-400 mt-2">Transportadora: {{ order.shipping_method }} • Prazo: até {{ order.shipping_days }} dias úteis</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- BOTÃO DE CANCELAMENTO -->
+            {% if order.status == 'Pending' or order.status == 'Preparing' %}
+                <div class="mt-4 text-center">
+                    <a href="{% url 'cancel_order_page' order.order_number %}" 
+                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-sm font-semibold rounded-lg border border-red-200 transition-all cursor-pointer">
+                        ❌ Cancelar Pedido
+                    </a>
+                    <p class="text-xs text-gray-400 mt-2">O reembolso será automático.</p>
+                </div>
+            {% elif order.status == 'Cancelled' %}
+                <div class="mt-4 text-center">
+                    <span class="px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-semibold">❌ Pedido cancelado</span>
+                    {% if order.cancellation_reason %}
+                        <p class="text-xs text-gray-400 mt-1">Motivo: {{ order.cancellation_reason }}</p>
+                    {% endif %}
+                    {% if order.refund_status == 'Refunded' %}
+                        <p class="text-xs text-green-600 mt-1">✅ Reembolso realizado</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm mb-8">
+            <table class="w-full text-left border-collapse text-sm text-gray-600">
+                <thead class="bg-gray-50 text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 w-7/12">Produtos</th>
+                        <th scope="col" class="px-6 py-4 text-center w-2/12">Qtd</th>
+                        <th scope="col" class="px-6 py-4 text-center w-3/12">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white font-medium">
+                    {% for item in order_detail %}
+                        <tr class="hover:bg-gray-50/40 transition-colors">
+                            <td class="px-6 py-4">
+                                <span class="text-gray-900 font-semibold block">{{ item.product.product_name }}</span>
+                                {% if item.variations.all %}
+                                    <div class="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400 font-normal">
+                                        {% for i in item.variations.all %}
+                                            <span><strong class="font-medium text-gray-500">{{ i.variation_category | capfirst }}:</strong> {{ i.variation_value | capfirst }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-center text-gray-900 font-bold whitespace-nowrap">
+                                {{ item.quantity }}
+                            </td>
+                            <td class="px-6 py-4 text-center text-gray-900 font-bold whitespace-nowrap">
+                                R$ {{ item.product_price }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-gray-50/70 border-t border-gray-200 text-gray-600 font-medium">
+                    <tr>
+                        <th colspan="2" class="px-6 py-3 text-right font-medium">Subtotal:</th>
+                        <td class="px-6 py-3 text-center text-gray-900 font-semibold whitespace-nowrap">R$ {{ subtotal }}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="px-6 py-3 text-right font-medium">Imposto / Taxa:</th>
+                        <td class="px-6 py-3 text-center text-gray-900 font-semibold whitespace-nowrap">R$ {{ order.tax }}</td>
+                    </tr>
+                    <tr class="border-t border-gray-200 bg-gray-50 text-base text-gray-900 font-bold">
+                        <th colspan="2" class="px-6 py-4 text-right uppercase tracking-wider text-sm">Total Geral:</th>
+                        <td class="px-6 py-4 text-center text-primary-600 font-extrabold whitespace-nowrap">R$ {{ order.order_total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <footer class="text-center pt-2 border-t border-gray-100">
+            <p class="text-sm font-semibold text-gray-400 italic">Obrigado por comprar conosco!</p>
+        </footer>
+        
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="py-6">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="swiper bannerSwiper w-full overflow-hidden rounded-2xl shadow-sm">
+            <div class="swiper-wrapper">
+                {% if banners %}
+                    {% for banner in banners %}
+                        <div class="swiper-slide">
+                            <a href="{{ banner.link|default:'#' }}">
+                                <img src="{{ banner.image.url }}" class="w-full h-auto object-cover max-h-[400px]" alt="Banner {{ forloop.counter }}">
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/banners/cover.jpg' %}" class="w-full h-auto object-cover max-h-[400px]" alt="Banner Principal">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+</section>
+
+<section class="py-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+
+        <header class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 tracking-tight">Produtos Populares</h3>
+            <a href="{% url 'store' %}" class="inline-flex items-center justify-center px-4 py-2 border border-primary-500 text-sm font-medium rounded-lg text-primary-600 bg-white hover:bg-primary-50 transition-all duration-200">
+                Ver tudo
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+                <div class="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                    
+                    <a href="{{product.get_url}}" class="block bg-gray-50 overflow-hidden aspect-square flex items-center justify-center p-4"> 
+                        <img src="{{product.images.url}}" class="object-contain max-h-full max-w-full group-hover:scale-105 transition-transform duration-300" alt="{{product.product_name}}"> 
+                    </a>
+                    
+                    <div class="p-4 flex flex-col flex-grow justify-between">
+                        <div>
+                            <a href="{{product.get_url}}" class="block text-sm font-medium text-gray-800 hover:text-primary-600 transition-colors line-clamp-2 mb-1">
+                                {{product.product_name}}
+                            </a>
+                            
+                            <div class="flex items-center text-amber-400 text-xs my-1">
+                                <span class="space-x-0.5">
+                                    <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 flex items-baseline justify-between">
+                            <span class="text-lg font-bold text-gray-900">R$ {{product.price}}</span>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #fff !important;
+        background: rgba(0, 0, 0, 0.4);
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50%;
+        transition: all 0.3s;
+    }
+    
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background: rgba(0, 0, 0, 0.6);
+    }
+    
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 18px !important;
+        font-weight: bold;
+    }
+    
+    .swiper-pagination-bullet {
+        background: #fff !important;
+        opacity: 0.6;
+    }
+    
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+        background: #fff !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const swiper = new Swiper('.bannerSwiper', {
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    });
+</script>
+
+{% endblock %}

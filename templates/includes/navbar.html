@@ -1,0 +1,121 @@
+{% load static %}
+
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav class="bg-gray-50 border-b border-gray-100 py-2 text-sm text-gray-600 hidden sm:block">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <div class="relative group cursor-pointer py-1">
+                    <span class="hover:text-primary-600 flex items-center gap-1">
+                        Português <i class="fa fa-chevron-down text-xs text-gray-400"></i>
+                    </span>
+                </div>
+                <div class="relative group cursor-pointer py-1">
+                    <span class="hover:text-primary-600 flex items-center gap-1">
+                        BRL (R$) <i class="fa fa-chevron-down text-xs text-gray-400"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-primary-600 flex items-center gap-1 transition-colors">
+                    <i class="fa fa-envelope text-gray-400"></i> contato@greatkart.com
+                </a>
+                <a href="#" class="hover:text-primary-600 flex items-center gap-1 transition-colors">
+                    <i class="fa fa-phone text-gray-400"></i> Ligue para nós
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <i class="fa fa-bars text-2xl"></i>
+                </button>
+
+                <a href="{% url 'home' %}" class="flex-shrink-0">
+                    <img class="h-10 w-auto" src="{% static './images/logo.png' %}" alt="Logo GreatKart">
+                </a>
+
+                <a href="{% url 'cart' %}" class="relative p-2 text-gray-600 hover:text-primary-600 md:hidden">
+                    <i class="fa fa-shopping-cart text-2xl"></i>
+                    {% if cart_count > 0 %}
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                            {{ cart_count }}
+                        </span>
+                    {% endif %}
+                </a>
+            </div>
+
+            <div id="nav-elements" class="hidden md:flex flex-col md:flex-row flex-1 items-stretch md:items-center gap-3 w-full md:w-auto">
+                
+                <div class="relative group">
+                    <button type="button" class="w-full md:w-auto inline-flex items-center justify-between gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">
+                        <span class="flex items-center gap-2"><i class="fa fa-bars"></i> Todas as Categorias</span>
+                        <i class="fa fa-chevron-down text-xs text-gray-400"></i>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 invisible opacity-0 group-hover:visible group-hover:opacity-100 z-50 transition-all duration-300 delay-100">
+                        <a class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-600 rounded-t-xl" href="{% url 'store' %}">Todos os Produtos</a>
+                        {% for category in links %}
+                            <a class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-600" href="{{category.get_url}}">{{category.category_name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <a href="{% url 'store' %}" class="inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 transition-all whitespace-nowrap">
+                    Loja
+                </a>
+
+                <form action="{% url 'search' %}" class="flex-1" method="GET">
+                    <div class="relative flex items-center w-full">
+                        <input type="text" class="w-full bg-gray-100 border border-transparent focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-100 text-sm text-gray-900 rounded-lg pl-4 pr-12 py-2.5 outline-none transition-all" placeholder="O que você está procurando?" name="keyword">
+                        <button class="absolute right-0 top-0 bottom-0 px-4 text-gray-500 hover:text-primary-600 transition-colors" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="auth-elements" class="hidden md:flex items-center justify-end gap-6 w-full md:w-auto border-t border-gray-100 pt-4 md:border-0 md:pt-0">
+                {% if user.id is None %}
+                    <div class="text-sm">
+                        <span class="block text-xs text-gray-400">Olá, visitante!</span>
+                        <div class="flex items-center gap-1.5 font-medium text-gray-700">
+                            <a href="{% url 'login' %}" class="hover:text-primary-600 transition-colors">Entrar</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="{% url 'register' %}" class="hover:text-primary-600 transition-colors">Cadastrar</a>
+                        </div>
+                    </div>
+                {% else %}  
+                    <div class="text-sm">
+                        <span class="block text-xs text-gray-400">Boas-vindas,</span>
+                        <div class="flex items-center gap-1.5 font-medium text-gray-700">
+                            <a href="{% url 'dashboard' %}" class="hover:text-primary-600 transition-colors max-w-[100px] truncate">{{ user.first_name }}</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="{% url 'logout' %}" class="hover:text-primary-600 text-red-500 transition-colors">Sair</a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <a href="{% url 'cart' %}" class="relative hidden md:inline-flex items-center justify-center h-11 w-11 rounded-full bg-gray-50 hover:bg-primary-50 text-gray-600 hover:text-primary-600 border border-gray-200 hover:border-primary-200 transition-all group">
+                    <i class="fa fa-shopping-cart text-lg"></i>
+                    <span class="absolute -top-1.5 -right-1.5 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                        {{ cart_count }}
+                    </span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+<script>
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const navElements = document.getElementById('nav-elements');
+        const authElements = document.getElementById('auth-elements');
+        
+        navElements.classList.toggle('hidden');
+        authElements.classList.toggle('hidden');
+    });
+</script>
