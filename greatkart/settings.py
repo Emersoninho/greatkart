@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     #'storages',
     'shipping',
     'social_django',
+    'dbbackup',
 ]
 
 MIDDLEWARE = [
@@ -264,3 +265,6 @@ CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 # Servir arquivos estáticos em produção
 if not DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# django-dbbackup (usando armazenamento local padrão)
+DBBACKUP_FILENAME_TEMPLATE = '{datetime}.dump'
