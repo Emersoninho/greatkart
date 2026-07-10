@@ -196,6 +196,7 @@ else:
     MERCADOPAGO_TEST_EMAIL = None
 
 SITE_URL = "https://unaligned-ladle-gloating.ngrok-free.dev"
+SITE_URL = "https://greatkart-7swi.onrender.com"
 
 MELHORENVIO_TOKEN = config('MELHOR_ENVIO_ACCESS_TOKEN', default='')
 
@@ -259,3 +260,7 @@ SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/'
 # Render
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
+# Servir arquivos estáticos em produção
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
