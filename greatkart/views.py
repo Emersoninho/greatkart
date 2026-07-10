@@ -18,3 +18,18 @@ def home(request):
         'banners': banners,  # 🆕
     }
     return render(request, 'home.html', context)
+
+from django.http import HttpResponse
+
+def create_admin(request):
+    from accounts.models import Account
+    if not Account.objects.filter(email='admin@greatkart.com').exists():
+        Account.objects.create_user(
+            first_name='Admin',
+            last_name='GreatKart',
+            username='admin',
+            email='admin@greatkart.com',
+            password='Admin123@'
+        )
+        return HttpResponse("✅ Admin criado! Pode remover esta URL.")
+    return HttpResponse("Admin já existe!")    
