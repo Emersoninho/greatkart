@@ -30,11 +30,11 @@ def create_admin(request):
             username='admin',
             email='admin@greatkart.com',
             is_staff=True,
-            is_superuser=True,
             is_admin=True,
             is_active=True,
+            is_superadmin=True,
         )
         user.set_password('Admin123@')
         user.save()
         return HttpResponse("✅ Admin criado!")
-    return HttpResponse("Admin já existe!")  
+    return HttpResponse("Admin já existe!") 
