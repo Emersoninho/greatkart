@@ -61,3 +61,21 @@ ul.thumb li img{
   height: 80px;
   border: 1px solid grey;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff !important;
+    background: rgba(0, 0, 0, 0.5);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 16px !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fff !important;
+}
