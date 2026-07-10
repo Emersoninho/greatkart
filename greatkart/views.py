@@ -24,12 +24,17 @@ from django.http import HttpResponse
 def create_admin(request):
     from accounts.models import Account
     if not Account.objects.filter(email='admin@greatkart.com').exists():
-        Account.objects.create_user(
+        user = Account(
             first_name='Admin',
             last_name='GreatKart',
             username='admin',
             email='admin@greatkart.com',
-            password='Admin123@'
+            is_staff=True,
+            is_superuser=True,
+            is_admin=True,
+            is_active=True,
         )
-        return HttpResponse("✅ Admin criado! Pode remover esta URL.")
-    return HttpResponse("Admin já existe!")    
+        user.set_password('Admin123@')
+        user.save()
+        return HttpResponse("✅ Admin criado!")
+    return HttpResponse("Admin já existe!")  
