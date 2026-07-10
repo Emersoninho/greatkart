@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     #'storages',
     'shipping',
     'social_django',
-    'dbbackup',
+    #'dbbackup',
 ]
 
 MIDDLEWARE = [
