@@ -44,7 +44,7 @@
                 <div class="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                     
                     <a href="{{product.get_url}}" class="block bg-gray-50 overflow-hidden aspect-square flex items-center justify-center p-4"> 
-                        <img src="{{product.images.url}}" class="object-contain max-h-full max-w-full group-hover:scale-105 transition-transform duration-300" alt="{{product.product_name}}"> 
+                        <img src="{% static 'images/products/' %}{{ product.slug }}" class="object-contain max-h-full max-w-full group-hover:scale-105 transition-transform duration-300" alt="{{product.product_name}}"> 
                     </a>
                     
                     <div class="p-4 flex flex-col flex-grow justify-between">
