@@ -48,7 +48,7 @@ class Account(AbstractBaseUser):
     last_login = models.DateTimeField(auto_now_add=True, verbose_name="Último Login")
     is_admin = models.BooleanField(default=False, verbose_name="É Administrador")
     is_staff = models.BooleanField(default=False, verbose_name="Equipe (Staff)")
-    is_active = models.BooleanField(default=False, verbose_name="Ativo")
+    is_active = models.BooleanField(default=True, verbose_name="Ativo")
     is_superadmin = models.BooleanField(default=False, verbose_name="Super Administrador")
 
     USERNAME_FIELD = 'email'
