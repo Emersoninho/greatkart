@@ -67,7 +67,7 @@
                                     <tr class="align-middle">
                                         <td class="py-4 pr-4">
                                             <div class="flex items-center gap-4">
-                                                <img src="{{ cart_item.product.images.url }}" class="h-16 w-16 rounded-lg object-contain bg-gray-50 border border-gray-100 flex-shrink-0">
+                                                <img src="{% static 'images/products/' %}{{ cart_item.product.slug }}.jpg" class="h-16 w-16 rounded-lg object-contain bg-gray-50 border border-gray-100 flex-shrink-0">
                                                 <div class="min-w-0">
                                                     <a href="{{ cart_item.product.get_url }}" class="text-gray-900 font-semibold hover:text-primary-600 transition-colors block truncate">
                                                         {{ cart_item.product.product_name }}
