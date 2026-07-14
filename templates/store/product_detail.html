@@ -22,7 +22,7 @@
                             {% for i in product_gallery %}
                                 <a href="#" onclick="changeImage('{{ i.image.url }}'); return false;" 
                                 class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                    <img src="{{ i.image.url }}" class="max-h-full object-contain" alt="Galeria do Produto">
+                                    <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-{{ forloop.counter }}.jpg" class="max-h-full object-contain" alt="Galeria do Produto">
                                 </a>
                             {% endfor %}
                         </div>
