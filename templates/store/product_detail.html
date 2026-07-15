@@ -27,7 +27,8 @@
                                     <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-{{ forloop.counter }}.jpg" class="max-h-full object-contain" alt="Galeria do Produto">
                                 </a>
                             {% endfor %} -->
-
+                            
+                            <!-- quando tiver em produção esse sai que não ta no banco -->
                             <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg'); return false;" 
                                 class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
                                     <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg" class="max-h-full object-contain" alt="Galeria 1">
