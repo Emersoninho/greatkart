@@ -11,23 +11,24 @@ def chatbot_api(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         user_message = data.get('message', '')
+        history = data.get('history', [])  # 🆕 histórico da conversa
         
         prompt = f"""Você é um atendente virtual da loja GreatKart, um ecommerce de roupas e calçados.
-
-INFORMAÇÕES DA LOJA:
-- Produtos: Camisas, Camisetas, Jeans, Calçados, Jaquetas
-- Frete: Sedex e PAC pelos Correios
-- Pagamento: Cartão, Pix e Boleto via Mercado Pago
-- Prazo de entrega: 3 a 10 dias úteis
-- Trocas: até 7 dias após recebimento
-- Contato: WhatsApp (81) 99679-1890
-
-REGRAS:
-1. Responda APENAS perguntas relacionadas à loja.
-2. Seja educado e use no máximo 3 frases.
-
-Cliente: {user_message}
-Atendente:"""
+        
+        REGRAS:
+        1. Responda APENAS perguntas relacionadas à loja.
+        2. Seja educado e use no máximo 3 frases.
+        3. Se já se despediram, apenas diga "Obrigado, volte sempre!".
+        """
+        
+        messages = [{"role": "system", "content": prompt}]
+        
+        # Adiciona histórico
+        for msg in history[-10:]:  # últimas 10 mensagens
+            messages.append(msg)
+        
+        # Adiciona mensagem atual
+        messages.append({"role": "user", "content": user_message})
         
         url = "https://api.groq.com/openai/v1/chat/completions"
         
@@ -38,7 +39,7 @@ Atendente:"""
         
         payload = {
             "model": "llama-3.3-70b-versatile",
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": messages,
             "max_tokens": 200
         }
         
