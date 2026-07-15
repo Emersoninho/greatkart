@@ -1,12 +1,11 @@
+# chatbot/views.py
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from decouple import config
-import google.generativeai as genai
+import requests
 import json
 
 GEMINI_API_KEY = config('GEMINI_API_KEY')
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-2.0-flash')
 
 @csrf_exempt
 def chatbot_api(request):
@@ -34,8 +33,17 @@ REGRAS:
 Cliente: {user_message}
 Atendente:"""
         
-        response = model.generate_content(prompt)
-        reply = response.text
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+        
+        payload = {
+            "contents": [{
+                "parts": [{"text": prompt}]
+            }]
+        }
+        
+        response = requests.post(url, json=payload)
+        result = response.json()
+        reply = result['candidates'][0]['content']['parts'][0]['text']
         
         return JsonResponse({'reply': reply})
     
