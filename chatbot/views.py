@@ -4,7 +4,7 @@ from decouple import config
 import requests
 import json
 
-GEMINI_API_KEY = config('GEMINI_API_KEY')
+GROQ_API_KEY = config('GROQ_API_KEY')
 
 @csrf_exempt
 def chatbot_api(request):
@@ -12,36 +12,42 @@ def chatbot_api(request):
         data = json.loads(request.body)
         user_message = data.get('message', '')
         
-        prompt = f"""Você é um atendente virtual da loja GreatKart.
+        prompt = f"""Você é um atendente virtual da loja GreatKart, um ecommerce de roupas e calçados.
+
+INFORMAÇÕES DA LOJA:
+- Produtos: Camisas, Camisetas, Jeans, Calçados, Jaquetas
+- Frete: Sedex e PAC pelos Correios
+- Pagamento: Cartão, Pix e Boleto via Mercado Pago
+- Prazo de entrega: 3 a 10 dias úteis
+- Trocas: até 7 dias após recebimento
+- Contato: WhatsApp (81) 99999-9999
+
+REGRAS:
+1. Responda APENAS perguntas relacionadas à loja.
+2. Seja educado e use no máximo 3 frases.
 
 Cliente: {user_message}
 Atendente:"""
         
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+        url = "https://api.groq.com/openai/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
         
         payload = {
-            "contents": [{
-                "parts": [{"text": prompt}]
-            }]
+            "model": "llama-3.3-70b-versatile",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 200
         }
         
         try:
-            response = requests.post(url, json=payload)
+            response = requests.post(url, json=payload, headers=headers)
             result = response.json()
-            
-            print("RESPOSTA GEMINI:", json.dumps(result, indent=2))
-            
-            # Verifica se tem candidates
-            if 'candidates' in result:
-                reply = result['candidates'][0]['content']['parts'][0]['text']
-            elif 'error' in result:
-                reply = f"Erro: {result['error']['message']}"
-            else:
-                reply = "Desculpe, não consegui processar sua pergunta. Tente novamente!"
-                
-        except Exception as e:
-            reply = "Desculpe, ocorreu um erro. Entre em contato pelo WhatsApp!"
-            print("ERRO:", str(e))
+            reply = result['choices'][0]['message']['content']
+        except:
+            reply = "Desculpe, ocorreu um erro. Contate nosso WhatsApp!"
         
         return JsonResponse({'reply': reply})
     
