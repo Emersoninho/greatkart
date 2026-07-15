@@ -131,8 +131,8 @@ $(document).ready(function() {
         position: fixed;
         width: 60px;
         height: 60px;
-        bottom: 30px;
-        left: 30px;
+        bottom: 30px !important;
+        left: 30px !important;
         background-color: #25d366;
         color: #fff;
         border-radius: 50%;
@@ -184,12 +184,13 @@ $(document).ready(function() {
 </a>
 <div class="whatsapp-tooltip">Precisa de ajuda? 💬</div>
 
-<!-- <style>
+<style>
     /* Sobe o chat do Tawk.to para não cobrir o WhatsApp */
     iframe[title="tawk.to chat widget"] {
         bottom: 80px !important;
+        right: 20px !important;
     }
-</style> -->
+</style>
 
 <!-- Tawk.to Chat -->
 <!--Start of Tawk.to Script-->
@@ -246,8 +247,8 @@ s0.parentNode.insertBefore(s1,s0);
     }
     .chatbot-toggle {
         position: fixed;
-        bottom: 30px;
-        right: 100px;
+        bottom: 30px !important;
+        right: 100px !important;
         background: #3b82f6;
         color: white;
         border: none;
