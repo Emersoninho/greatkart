@@ -43,8 +43,9 @@ Atendente:"""
         
         response = requests.post(url, json=payload)
         result = response.json()
-        reply = result['candidates'][0]['content']['parts'][0]['text']
         
+        reply = result['candidates'][0]['content']['parts'][0]['text']
+        print("RESPOSTA GEMINI:", json.dumps(result, indent=2))
         return JsonResponse({'reply': reply})
     
     return JsonResponse({'error': 'Método não permitido'}, status=405)
