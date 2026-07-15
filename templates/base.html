@@ -206,5 +206,104 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 
+<!-- Chatbot IA Gemini -->
+<style>
+    .chatbot-widget {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 350px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 1000;
+        display: none;
+    }
+    .chatbot-header {
+        background: #3b82f6;
+        color: white;
+        padding: 15px;
+        border-radius: 12px 12px 0 0;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .chatbot-body {
+        height: 300px;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    .chatbot-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .chatbot-input input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+    }
+    .chatbot-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 100px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+</style>
+
+<button class="chatbot-toggle" onclick="toggleChat()">🤖</button>
+
+<div class="chatbot-widget" id="chatbot">
+    <div class="chatbot-header" onclick="toggleChat()">
+        🤖 Assistente GreatKart
+    </div>
+    <div class="chatbot-body" id="chatMessages">
+        <p>👋 Olá! Sou o assistente virtual da GreatKart. Como posso ajudar?</p>
+    </div>
+    <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter')sendMessage()">
+        <button onclick="sendMessage()" style="margin-left:5px;padding:8px 15px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;">➤</button>
+    </div>
+</div>
+
+<script>
+    function toggleChat() {
+        const chat = document.getElementById('chatbot');
+        chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.innerHTML += `<p><strong>Você:</strong> ${message}</p>`;
+        input.value = '';
+        
+        chatMessages.innerHTML += '<p><em>Digitando...</em></p>';
+        
+        const response = await fetch('/chatbot/api/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: message})
+        });
+        
+        const data = await response.json();
+        chatMessages.innerHTML = chatMessages.innerHTML.replace('<p><em>Digitando...</em></p>', '');
+        chatMessages.innerHTML += `<p><strong>🤖 Assistente:</strong> ${data.reply}</p>`;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
+
 </body>
 </html>

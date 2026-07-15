@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     #'dbbackup',
     'cloudinary',
     'cloudinary_storage',
+    'chatbot',
 ]
 
 MIDDLEWARE = [

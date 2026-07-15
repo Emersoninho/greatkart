@@ -41,6 +41,7 @@ urlpatterns = [
     path('manifest.json', TemplateView.as_view(template_name='manifest.json', content_type='application/json'), name='manifest.json'),
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('create-admin/', views.create_admin),
+    path('chatbot/', include('chatbot.urls')),
 ]
 
 # ⚠️ SÓ NO FINAL DO ARQUIVO:
