@@ -218,6 +218,7 @@ s0.parentNode.insertBefore(s1,s0);
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         z-index: 1000;
         display: none;
+        
     }
     .chatbot-header {
         background: #3b82f6;
@@ -258,6 +259,21 @@ s0.parentNode.insertBefore(s1,s0);
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+
+    @media (max-width: 640px) {
+    .chatbot-widget {
+        width: 90vw !important;
+        right: 5vw !important;
+        bottom: 80px !important;
+    }
+    .chatbot-body {
+        height: 200px !important;
+    }
+    .chatbot-toggle {
+        right: 20px !important;
+        bottom: 30px !important;
+    }
+}
 </style>
 
 <button class="chatbot-toggle" onclick="toggleChat()">🤖</button>
