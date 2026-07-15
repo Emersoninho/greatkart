@@ -20,7 +20,7 @@ INFORMAÇÕES DA LOJA:
 - Pagamento: Cartão, Pix e Boleto via Mercado Pago
 - Prazo de entrega: 3 a 10 dias úteis
 - Trocas: até 7 dias após recebimento
-- Contato: WhatsApp (81) 99999-9999
+- Contato: WhatsApp (81) 99679-1890
 
 REGRAS:
 1. Responda APENAS perguntas relacionadas à loja.
