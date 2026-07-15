@@ -51,13 +51,16 @@ def register(request):
                 'token': default_token_generator.make_token(user),
             })
             to_email = email
-            send_email = EmailMessage(
-                mail_subject, 
-                message, 
-                from_email=settings.DEFAULT_FROM_EMAIL, 
-                to=[to_email]
-            )
-            send_email.send()
+            try:
+                send_email = EmailMessage(
+                    mail_subject, 
+                    message, 
+                    from_email=settings.DEFAULT_FROM_EMAIL, 
+                    to=[to_email]
+                )
+                send_email.send()
+            except:
+                pass # Ignora erro de e-mail no Render    
             
             # Constrói a URL usando o NAME da rota ('login') e joga os parâmetros no final
             url_redirect = reverse('login') + f'?command=verification&email={email}'
