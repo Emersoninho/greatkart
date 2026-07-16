@@ -109,6 +109,11 @@
                             </div>
                         </article>
                     </form>
+
+                    <p style="font-size:10px; color:red;">
+    Tamanhos selecionados: {{ request.GET.getlist('size') }}<br>
+    Min: {{ request.GET.min_price }} | Max: {{ request.GET.max_price }}
+</p>
                     
                 </div>
             </aside>
