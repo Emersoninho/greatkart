@@ -184,14 +184,14 @@ $(document).ready(function() {
 </a>
 <div class="whatsapp-tooltip">Precisa de ajuda? 💬</div>
 
-<style>
+<!-- <style>
     /* Sobe o chat do Tawk.to para não cobrir o WhatsApp */
     iframe[title="tawk.to chat widget"] {
         bottom: 20px !important;
         right: 30px !important;
         z-index: 998;
     }
-</style>
+</style> -->
 
 <!-- Tawk.to Chat -->
 <!--Start of Tawk.to Script-->
@@ -209,7 +209,7 @@ s0.parentNode.insertBefore(s1,s0);
 <!--End of Tawk.to Script-->
 
 <!-- Chatbot IA Gemini -->
-<style>
+<!-- <style>
     .chatbot-widget {
         position: fixed;
         bottom: 100px;
@@ -276,6 +276,78 @@ s0.parentNode.insertBefore(s1,s0);
         bottom: 30px !important;
     }
 }
+</style> -->
+
+<style>
+    /* Chatbot IA Groq */
+    .chatbot-widget {
+        position: fixed;
+        bottom: 170px !important;
+        right: 30px !important;
+        width: 350px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 999;
+        display: none;
+    }
+    .chatbot-header {
+        background: #3b82f6;
+        color: white;
+        padding: 15px;
+        border-radius: 12px 12px 0 0;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .chatbot-body {
+        height: 300px;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    .chatbot-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #e5e7eb;
+    }
+    .chatbot-input input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+    }
+    .chatbot-toggle {
+        position: fixed;
+        bottom: 100px !important;
+        right: 30px !important;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Tawk.to - mais baixo */
+    iframe[title="tawk.to chat widget"] {
+        bottom: 20px !important;
+        right: 30px !important;
+        z-index: 998;
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+        .chatbot-widget {
+            width: 90vw !important;
+            right: 5vw !important;
+        }
+        .chatbot-body {
+            height: 200px !important;
+        }
+    }
 </style>
 
 <button class="chatbot-toggle" onclick="toggleChat()">🤖</button>
