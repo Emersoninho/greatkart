@@ -25,25 +25,22 @@ def store(request, category_slug=None):
     
     # 🆕 Filtro por tamanho
     sizes = request.GET.getlist('size')
-    min_price = request.GET.get('min_price', 0)
-    max_price = request.GET.get('max_price')
-
-    print("=" * 50)
-    print("SIZES:", sizes)
-    print("MIN:", min_price)
-    print("MAX:", max_price)
-    print("=" * 50)
     if sizes:
         products = products.filter(
             variation__variation_value__in=sizes, 
             variation__variation_category='size'
         ).distinct()
     
-    # 🆕 Filtro por preço
-    min_price = request.GET.get('min_price', 0)
+  # Filtro por preço (só aplica se ambos foram preenchidos)
+    min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    if max_price:
+
+    if min_price and max_price:
         products = products.filter(price__gte=min_price, price__lte=max_price)
+    elif min_price:
+        products = products.filter(price__gte=min_price)
+    elif max_price:
+        products = products.filter(price__lte=max_price)
     
     # Ordenação e paginação
     products = products.order_by('id')
