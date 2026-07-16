@@ -25,6 +25,14 @@ def store(request, category_slug=None):
     
     # 🆕 Filtro por tamanho
     sizes = request.GET.getlist('size')
+    min_price = request.GET.get('min_price', 0)
+    max_price = request.GET.get('max_price')
+
+    print("=" * 50)
+    print("SIZES:", sizes)
+    print("MIN:", min_price)
+    print("MAX:", max_price)
+    print("=" * 50)
     if sizes:
         products = products.filter(
             variation__variation_value__in=sizes, 
