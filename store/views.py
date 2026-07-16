@@ -14,21 +14,35 @@ from orders.models import OrderProduct
 
 def store(request, category_slug=None):
     categories = None
-    products = None
-
-    if category_slug != None:
+    
+    # Base: todos os produtos disponíveis
+    products = Product.objects.filter(is_available=True)
+    
+    # Filtro por categoria
+    if category_slug:
         categories = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(category=categories, is_available=True)
-        paginator = Paginator(products, 12)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        product_count = products.count()
-    else:
-        products = Product.objects.all().filter(is_available=True).order_by('id')
-        paginator = Paginator(products, 12)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        product_count = products.count()
+        products = products.filter(category=categories)
+    
+    # 🆕 Filtro por tamanho
+    sizes = request.GET.getlist('size')
+    if sizes:
+        products = products.filter(
+            variation__variation_value__in=sizes, 
+            variation__variation_category='size'
+        ).distinct()
+    
+    # 🆕 Filtro por preço
+    min_price = request.GET.get('min_price', 0)
+    max_price = request.GET.get('max_price')
+    if max_price:
+        products = products.filter(price__gte=min_price, price__lte=max_price)
+    
+    # Ordenação e paginação
+    products = products.order_by('id')
+    paginator = Paginator(products, 12)
+    page = request.GET.get('page')
+    paged_products = paginator.get_page(page)
+    product_count = products.count()
 
     context = {
         'products': paged_products,
