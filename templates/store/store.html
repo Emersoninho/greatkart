@@ -83,23 +83,23 @@
                                     <div class="flex flex-col gap-1">
                                         <label class="text-[10px] font-bold text-gray-400 uppercase">Mín</label>
                                         <select name="min_price" class="w-full px-2 py-1.5 text-xs text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 cursor-pointer font-medium">
-                                            <option value="0">R$ 0</option>
-                                            <option value="50">R$ 50</option>
-                                            <option value="100">R$ 100</option>
-                                            <option value="150">R$ 150</option>
-                                            <option value="200">R$ 200</option>
-                                            <option value="500">R$ 500</option>
+                                            <option value="0" {% if request.GET.min_price == '0' %}selected{% endif %}>R$ 0</option>
+                                            <option value="50" {% if request.GET.min_price == '50' %}selected{% endif %}>R$ 50</option>
+                                            <option value="100" {% if request.GET.min_price == '100' %}selected{% endif %}>R$ 100</option>
+                                            <option value="150" {% if request.GET.min_price == '150' %}selected{% endif %}>R$ 150</option>
+                                            <option value="200" {% if request.GET.min_price == '200' %}selected{% endif %}>R$ 200</option>
+                                            <option value="500" {% if request.GET.min_price == '500' %}selected{% endif %}>R$ 500</option>
                                         </select>
                                     </div>
                                     <div class="flex flex-col gap-1">
                                         <label class="text-[10px] font-bold text-gray-400 uppercase text-right">Máx</label>
                                         <select name="max_price" class="w-full px-2 py-1.5 text-xs text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-primary-500 cursor-pointer font-medium">
-                                            <option value="50">R$ 50</option>
-                                            <option value="100">R$ 100</option>
-                                            <option value="150">R$ 150</option>
-                                            <option value="200">R$ 200</option>
-                                            <option value="500">R$ 500</option>
-                                            <option value="1000">R$ 1000</option>
+                                            <option value="50" {% if request.GET.max_price == '50' %}selected{% endif %}>R$ 50</option>
+                                            <option value="100" {% if request.GET.max_price == '100' %}selected{% endif %}>R$ 100</option>
+                                            <option value="150" {% if request.GET.max_price == '150' %}selected{% endif %}>R$ 150</option>
+                                            <option value="200" {% if request.GET.max_price == '200' %}selected{% endif %}>R$ 200</option>
+                                            <option value="500" {% if request.GET.max_price == '500' %}selected{% endif %}>R$ 500</option>
+                                            <option value="1000" {% if request.GET.max_price == '1000' %}selected{% endif %}>R$ 1000</option>
                                         </select>
                                     </div>
                                 </div>
