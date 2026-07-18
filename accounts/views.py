@@ -41,30 +41,36 @@ def register(request):
             profile.profile_picture = 'default/default-user-png'
             profile.save()
 
+            # como o render não funciona com email to trocando esse codigo para o de baixo
             # User activate
-            current_site = get_current_site(request)
-            mail_subject = 'Por favor, ative a sua conta'
-            message = render_to_string('accounts/account_verification_email.html', {
-                'user': user,
-                'domain': current_site,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
-            to_email = email
-            try:
-                send_email = EmailMessage(
-                    mail_subject, 
-                    message, 
-                    from_email=settings.DEFAULT_FROM_EMAIL, 
-                    to=[to_email]
-                )
-                send_email.send()
-            except:
-                pass # Ignora erro de e-mail no Render    
+            # current_site = get_current_site(request)
+            # mail_subject = 'Por favor, ative a sua conta'
+            # message = render_to_string('accounts/account_verification_email.html', {
+            #     'user': user,
+            #     'domain': current_site,
+            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token': default_token_generator.make_token(user),
+            # })
+            # to_email = email
+            # try:
+            #     send_email = EmailMessage(
+            #         mail_subject, 
+            #         message, 
+            #         from_email=settings.DEFAULT_FROM_EMAIL, 
+            #         to=[to_email]
+            #     )
+            #     send_email.send()
+            # except:
+            #     pass # Ignora erro de e-mail no Render    
             
-            # Constrói a URL usando o NAME da rota ('login') e joga os parâmetros no final
-            url_redirect = reverse('login') + f'?command=verification&email={email}'
-            return redirect(url_redirect)
+            # # Constrói a URL usando o NAME da rota ('login') e joga os parâmetros no final
+            # url_redirect = reverse('login') + f'?command=verification&email={email}'
+            # return redirect(url_redirect)
+        
+            # Cadastro direto - redireciona pro login porque o render não funciona
+            messages.success(request, 'Cadastro realizado com sucesso! Faça login para continuar.')
+            return redirect('login')
+
     else:        
         form = RegistrationForm()
     context = {
