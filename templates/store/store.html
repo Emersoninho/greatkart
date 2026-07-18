@@ -129,7 +129,11 @@
                             <div class="group flex flex-col justify-between bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-all duration-200">
                                 <div class="aspect-square bg-gray-50/50 p-4 flex items-center justify-center overflow-hidden relative border-b border-gray-100 flex-shrink-0">
                                     <a href="{{ product.get_url }}" class="w-full h-full flex items-center justify-center">
+                                        <!-- ===== RENDER (STATIC) ===== -->
                                         <img src="{% static 'images/products/' %}{{ product.slug }}.jpg" class="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300" alt="{{ product.product_name }}">
+
+                                        <!-- ===== PRODUÇÃO (UPLOAD) ===== -->
+<!-- <img src="{                        { product.images.url }}" class="max-h-full max-w-full object-contain transform group-hover:scale-105 transition-transform duration-300" alt="{{ product.product_name }}"> -->
                                     </a>
                                 </div>
                                 

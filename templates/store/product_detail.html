@@ -10,15 +10,39 @@
                 
                 <aside class="p-6 sm:p-8 bg-white flex flex-col justify-between border-b md:border-b-0 md:border-r border-gray-100">
                     <div class="aspect-square w-full bg-gray-50/50 rounded-xl border border-gray-100 p-4 flex items-center justify-center overflow-hidden">
+                        <!-- ===== RENDER (STATIC) ===== -->
                         <img id="mainImage" src="{% static 'images/products/' %}{{ single_product.slug }}.jpg" class="max-h-full max-w-full object-contain transform hover:scale-105 transition-transform duration-300" alt="{{ single_product.product_name }}">
+
+                        <!-- ===== PRODUÇÃO (UPLOAD) ===== -->
+                        <!-- <img id="mainImage" src="{{ single_product.images.url }}" class="max-h-full max-w-full object-contain transform hover:scale-105 transition-transform duration-300" alt="{{ single_product.product_name }}"> -->
                     </div>
                     
                     <div class="mt-4">
                         <div class="flex flex-wrap gap-2">
+                            <!-- ===== RENDER (STATIC) ===== -->
                             <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}.jpg'); return false;"
                             class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
                                 <img src="{% static 'images/products/' %}{{ single_product.slug }}.jpg" class="max-h-full object-contain" alt="Imagem do Produto">
                             </a>
+                            
+                            <!-- ===== RENDER (STATIC) ===== -->
+                            <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg'); return false;" 
+                            class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg" class="max-h-full object-contain" alt="Galeria 1">
+                            </a>
+                            <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-2.jpg'); return false;" 
+                            class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-2.jpg" class="max-h-full object-contain" alt="Galeria 2">
+                            </a>
+                            <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-3.jpg'); return false;" 
+                            class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-3.jpg" class="max-h-full object-contain" alt="Galeria 3">
+                            </a>
+
+                            <!-- ===== PRODUÇÃO (UPLOAD) ===== -->
+                            <!-- <a href="#" onclick="changeImage('{{ single_product.images.url }}'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                <img src="{{ single_product.images.url }}" class="max-h-full object-contain" alt="Imagem do Produto">
+                            </a> -->
 
                             <!-- quando for pra produção de verdade usar esse  -->
                             <!-- {% for i in product_gallery %}
@@ -27,20 +51,6 @@
                                     <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-{{ forloop.counter }}.jpg" class="max-h-full object-contain" alt="Galeria do Produto">
                                 </a>
                             {% endfor %} -->
-                            
-                            <!-- quando tiver em produção esse sai que não ta no banco -->
-                            <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg'); return false;" 
-                                class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                    <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-1.jpg" class="max-h-full object-contain" alt="Galeria 1">
-                                </a>
-                                <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-2.jpg'); return false;" 
-                                class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                    <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-2.jpg" class="max-h-full object-contain" alt="Galeria 2">
-                                </a>
-                                <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ single_product.slug }}-gallery-3.jpg'); return false;" 
-                                class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                    <img src="{% static 'images/products/' %}{{ single_product.slug }}-gallery-3.jpg" class="max-h-full object-contain" alt="Galeria 3">
-                                </a>
                             
                         </div>
                     </div>
