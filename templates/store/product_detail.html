@@ -21,17 +21,15 @@
                         <div class="flex flex-wrap gap-2">
                             <!-- ===== RENDER (STATIC) ===== -->
                             {% with slug=single_product.slug %}
-                                {% if slug == 'calca-jeans-atx' or slug == 'tenis-puma-ferrari' or slug == 'tenis-jordan-true-flight' or slug == 'jaqueta-us-polo' %}
-                                    <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-1.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                        <img src="{% static 'images/products/' %}{{ slug }}-gallery-1.jpg" class="max-h-full object-contain" alt="Galeria 1">
-                                    </a>
-                                    <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-2.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                        <img src="{% static 'images/products/' %}{{ slug }}-gallery-2.jpg" class="max-h-full object-contain" alt="Galeria 2">
-                                    </a>
-                                    <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-3.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
-                                        <img src="{% static 'images/products/' %}{{ slug }}-gallery-3.jpg" class="max-h-full object-contain" alt="Galeria 3">
-                                    </a>
-                                {% endif %}
+                                <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-1.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                    <img src="{% static 'images/products/' %}{{ slug }}-gallery-1.jpg" class="max-h-full object-contain" alt="Galeria 1" onerror="this.parentElement.style.display='none'">
+                                </a>
+                                <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-2.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                    <img src="{% static 'images/products/' %}{{ slug }}-gallery-2.jpg" class="max-h-full object-contain" alt="Galeria 2" onerror="this.parentElement.style.display='none'">
+                                </a>
+                                <a href="#" onclick="changeImage('{% static 'images/products/' %}{{ slug }}-gallery-3.jpg'); return false;" class="h-16 w-16 p-1 bg-white border border-gray-200 hover:border-primary-500 rounded-lg flex items-center justify-center overflow-hidden transition-colors cursor-pointer">
+                                    <img src="{% static 'images/products/' %}{{ slug }}-gallery-3.jpg" class="max-h-full object-contain" alt="Galeria 3" onerror="this.parentElement.style.display='none'">
+                                </a>
                             {% endwith %}
 
                             <!-- ===== PRODUÇÃO (UPLOAD) ===== -->
